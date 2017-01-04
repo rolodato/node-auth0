@@ -44,7 +44,8 @@ var BASE_URL_FORMAT = 'https://%s/api/v2';
  *
  * var ManagementClient = require('auth0').ManagementClient;
  * var auth0 = new ManagementClient({
- *   token: '{YOUR_API_V2_TOKEN}',
+ *   clientId: '{NONINTERACTIVE_CLIENT_ID}',
+ *   clientSecret: '{NONINTERACTIVE_CLIENT_SECRET}'
  *   domain: '{YOUR_ACCOUNT}.auth0.com'
  * });
  *
@@ -57,8 +58,8 @@ var ManagementClient = function (options) {
     throw new ArgumentError('Management API SDK options must be an object');
   }
 
-  if (!options.token || options.token.length === 0) {
-    throw new ArgumentError('An access token must be provided');
+  if (!options.clientId || options.clientId.length === 0) {
+    throw new ArgumentError('Must provide a client ID');
   }
 
   if (!options.domain || options.domain.length === 0) {
@@ -67,11 +68,12 @@ var ManagementClient = function (options) {
 
   var managerOptions = {
     headers: {
-      'Authorization': 'Bearer ' + options.token,
       'User-agent': 'node.js/' + process.version.replace('v', ''),
       'Content-Type': 'application/json'
     },
-    baseUrl: util.format(BASE_URL_FORMAT, options.domain)
+    baseUrl: util.format(BASE_URL_FORMAT, options.domain),
+    clientId: options.clientId,
+    clientSecret: options.clientSecret
   };
 
   if (options.telemetry !== false) {

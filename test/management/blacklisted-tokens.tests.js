@@ -6,17 +6,18 @@ var API_URL = 'https://tenant.auth0.com';
 
 var BlacklistedTokensManager = require(SRC_DIR + '/management/BlacklistedTokensManager');
 var ArgumentError = require(SRC_DIR + '/exceptions').ArgumentError;
+var utils = require(SRC_DIR + '/utils');
 
 
 describe('BlacklistedTokensManager', function () {
   before(function () {
-    this.token = 'TOKEN';
+    utils.cache.put('myClient', 'TOKEN');
     this.blacklistedTokens = new BlacklistedTokensManager({
-      headers: { authorization: 'Bearer ' + this.token },
+      clientId: 'myClient',
+      clientSecret: 'foo',
       baseUrl: API_URL
     });
   });
-
 
   describe('instance', function () {
     var methods = ['add', 'getAll'];
@@ -142,7 +143,7 @@ describe('BlacklistedTokensManager', function () {
 
       var request = nock(API_URL)
         .get('/blacklists/tokens')
-        .matchHeader('Authorization', 'Bearer ' + this.token)
+        .matchHeader('Authorization', 'Bearer ' + utils.cache.get('myClient'))
         .reply(200)
 
       this
@@ -262,7 +263,7 @@ describe('BlacklistedTokensManager', function () {
 
       var request = nock(API_URL)
         .post('/blacklists/tokens')
-        .matchHeader('Authorization', 'Bearer ' + this.token)
+        .matchHeader('Authorization', 'Bearer ' + utils.cache.get('myClient'))
         .reply(200)
 
       this

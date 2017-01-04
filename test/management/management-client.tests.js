@@ -24,17 +24,18 @@ describe('ManagementClient', function () {
     });
 
 
-    it('should raise an error when the token is not valid', function () {
-      var options = { token: '', domain: 'tenant.auth.com' };
+    it('should raise an error when the client ID is not valid', function () {
+      var options = { clientId: '', clientSecret: '', domain: 'tenant.auth.com' };
       var client = ManagementClient.bind(null, options);
 
       expect(client)
-        .to.throw(ArgumentError, 'An access token must be provided');
+        .to.throw(ArgumentError, 'Must provide a client ID');
     });
 
 
     it('should raise an error when the domain is not valid', function () {
-      var client = ManagementClient.bind(null, { token: 'token', domain: '' });
+      var options = { clientId: 'foo', clientSecret: 'bar', domain: '' };
+      var client = ManagementClient.bind(null, options);
 
       expect(client)
         .to.throw(ArgumentError, 'Must provide a domain');
@@ -91,7 +92,7 @@ describe('ManagementClient', function () {
       };
 
       before(function () {
-        this.client = new ManagementClient({ token: 'token', domain: 'tenant.auth0.com' });
+        this.client = new ManagementClient({ clientId: 'foo', clientSecret: 'bar', domain: 'tenant.auth0.com' });
       });
 
       // Tests common to all managers.
@@ -151,7 +152,7 @@ describe('ManagementClient', function () {
       ];
 
       before(function () {
-        this.client = new ManagementClient({ token: 'token', domain: 'auth0.com' });
+        this.client = new ManagementClient({ clientId: 'foo', clientSecret: 'bar', domain: 'auth0.com' });
       });
 
       for (var i = 0, l = methods.length; i < l; i++) {

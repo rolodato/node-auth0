@@ -24,6 +24,7 @@
   "homepage": "https://github.com/auth0/node-auth0",
   "dependencies": {
     "bluebird": "^2.10.2",
+    "memory-cache": "^0.1.6",
     "request": "^2.75.0",
     "rest-facade": "^1.2.7",
     "url-join": "0.0.1"

@@ -1,4 +1,4 @@
-var RestClient = require('rest-facade').Client;
+var OAuthRestClient = require('../utils').OAuthRestClient;
 var ArgumentError = require('../exceptions').ArgumentError;
 var utils = require('../utils');
 
@@ -34,7 +34,9 @@ var BlacklistedTokensManager = function (options) {
    */
   var clientOptions = {
     headers: options.headers,
-    query: { repeatParams: false }
+    query: { repeatParams: false },
+    clientId: options.clientId,
+    clientSecret: options.clientSecret
   };
 
   /**
@@ -43,7 +45,7 @@ var BlacklistedTokensManager = function (options) {
    *
    * @type {external:RestClient}
    */
-  this.resource = new RestClient(options.baseUrl + '/blacklists/tokens', clientOptions);
+  this.resource = new OAuthRestClient(options.baseUrl + '/blacklists/tokens', clientOptions);
 };
 
 
